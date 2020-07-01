@@ -7,14 +7,7 @@ let missed = 0;
 const phrases = ["Beating Around the Bush", "Curiosity Killed The Cat", "Right Off the Bat","Wake Up Call","Barking Up The Wrong Tree"];
 
  
-        
-//Hide the start screen overlay  
 
-startGame.addEventListener("click", () => {
-    if (overlay.style.display = "flex"){
-      overlay.style.display = "none"
-    }
-  });
 
 //Function to get a random Phrase
 
@@ -45,29 +38,17 @@ getRandomPhrase(phrases);
 function checkLetter (letter){
   const listItems = document.querySelectorAll(".letter");
   let match = null;
-  let letterFound = "";
   for (let i = 0; i < listItems.length; i++){
     if (letter == listItems[i].innerHTML){
       listItems[i].classList.add("show");
-      letterFound += listItems[i].innerHTML; 
-      console.log(letterFound) 
+      match = listItems[i].innerHTML;  
+      console.log(match)
   }
 }
 return match; 
 }
 
 
-//Event lister for keyoard
-
-qwerty.addEventListener("click", (event) => {
-  if (event.target.tagName == "BUTTON"){
-    const button = event.target;
-    const letterClicked = event.target.innerHTML;
-    button.classList.add("chosen");
-    letterClicked.disabled = "true";
-    checkLetter(letterClicked);
-  } 
-});
 
 // Check to see if game won
 
@@ -83,7 +64,42 @@ function checkWin (){
       overlay.classList.add("lose");   
       startGame.textContent = "You Lose";
       overlay.style.display = "flex";
+      
     }
+    console.log(checkWin)
     return checkWin()
 
     }
+
+
+            
+//Hide the start screen overlay  
+
+startGame.addEventListener("click", () => {
+  if (overlay.style.display = "flex"){
+    overlay.style.display = "none"
+  }
+}); 
+
+
+    //Event lister for keyoard
+
+qwerty.addEventListener("click", (event) => {
+  if (event.target.tagName == "BUTTON"){
+    const button = event.target;
+    const letterClicked = event.target.innerHTML;
+    button.classList.add("chosen");
+    letterClicked.disabled = "true";
+    let letterFound = checkLetter(letterClicked);
+    if (letterFound == null){    
+    let missedTurn = document.getElementsByClassName("tries");
+    missedTurn.src = "images/lostheart.png"
+    console.log(missedTurn )
+      missed += 1;
+
+
+
+    }
+  } 
+});
+
