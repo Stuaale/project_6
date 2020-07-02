@@ -87,10 +87,12 @@ function checkWin (){
     }
     for ( let i = 0; i < phrase.length; i++ ){
       phrase[i].classList.remove("show");
+      
+    }
+    }
+    
+    }
 
-    }
-    }
-    }
   
 
 
@@ -111,18 +113,21 @@ qwerty.addEventListener("click", (event) => {
   if (event.target.tagName == "BUTTON"){
     const button = event.target;
     const letterClicked = event.target.innerHTML;
+    const ol = document.querySelector("ol");
     button.classList.add("chosen");
     button.disabled = "true";
     let letterFound = checkLetter(letterClicked);
     if (letterFound == null){   
       missed += 1; 
-      let li = document.querySelectorAll(".tries")[0];
-      let ol = document.querySelectorAll("ol")[0];
-      ol.removeChild(li);
+      let li = document.getElementsByClassName("tries")[0];      
+      if (li.parentNode) {
+        li.parentNode.removeChild(li);
+      }
       let lostHeart = document.createElement("li");
       lostHeart.innerHTML = "<img src = 'images/lostheart.png' height='35px' width = '30px'>";
       lostHeart.classList.add("tries");  
-      ol.insertBefore(lostHeart, li[0])
+      ol.insertBefore(lostHeart, li.nextElementSibling)
+
      
 }}
 checkWin();
