@@ -1,7 +1,10 @@
 const overlay = document.getElementById("overlay");
 const qwerty = document.getElementById("qwerty");
 const phrase = document.getElementById("phrase");
-const startGame = document.querySelector(".btn__reset");
+let startGame = document.querySelector(".btn__reset");
+let title = document.querySelector(".title");
+
+
 
 let missed = 0;
 const phrases = ["Beating Around the Bush", "Curiosity Killed The Cat", "Right Off the Bat","Wake Up Call","Barking Up The Wrong Tree"];
@@ -42,7 +45,7 @@ function checkLetter (letter){
     if (letter == listItems[i].innerHTML){
       listItems[i].classList.add("show");
       match = listItems[i].innerHTML;  
-      console.log(match)
+
   }
 }
 return match; 
@@ -55,30 +58,50 @@ return match;
 function checkWin (){
   let listItems = document.querySelectorAll(".letter");
   let showListItems = document.querySelectorAll(".show");
-    if (listItems.length === showListItems.length){
-      overlay.classList.add("win");
-      startGame.textContent = "You Win";
-      overlay.style.display = "flex";
+    if (listItems.length == showListItems.length){
+      overlay.className ="win";
+      overlay.style.display = "flex";      
+      title.innerHTML = "You Win"      
+      startGame.textContent = "Try Again";
+
     } 
     else if ( missed > 4){
-      overlay.classList.add("lose");   
-      startGame.textContent = "You Lose";
+      overlay.className = "lose";   
+      title.textContent = "You Lose";
       overlay.style.display = "flex";
-      
+      startGame.textContent = "Try Again";      
+    }   
     }
-    console.log(checkWin)
-    return checkWin()
+
+  function reset (){
+    const button = document.getElementsByTagName("button");
+    const hearts = document.getElementsByClassName("tries")
+    const phrase = document.getElementsByClassName("show");
+    overlay.style.display = "none";
+    missed = 0;
+    for ( let i = 0; i < button.length; i++ ){
+      button[i].className = "";
+      button[i].disabled = false;
+    for (let i = 0; i < hearts.length; i++){
+      hearts[i].innerHTML = "<img src = 'images/liveheart.png' height='35px' width = '30px'>";
+    }
+    for ( let i = 0; i < phrase.length; i++ ){
+      phrase[i].classList.remove("show");
 
     }
+    }
+    }
+  
 
 
             
 //Hide the start screen overlay  
 
 startGame.addEventListener("click", () => {
-  if (overlay.style.display = "flex"){
+  if (startGame.textContent == "Start Game"){
     overlay.style.display = "none"
-  }
+  } else if (startGame.textContent == "Try Again")
+  reset()
 }); 
 
 
@@ -89,17 +112,19 @@ qwerty.addEventListener("click", (event) => {
     const button = event.target;
     const letterClicked = event.target.innerHTML;
     button.classList.add("chosen");
-    letterClicked.disabled = "true";
+    button.disabled = "true";
     let letterFound = checkLetter(letterClicked);
-    if (letterFound == null){    
-    let missedTurn = document.getElementsByClassName("tries");
-    missedTurn.src = "images/lostheart.png"
-    console.log(missedTurn )
-      missed += 1;
-
-
-
-    }
-  } 
+    if (letterFound == null){   
+      missed += 1; 
+      let li = document.querySelectorAll(".tries")[0];
+      let ol = document.querySelectorAll("ol")[0];
+      ol.removeChild(li);
+      let lostHeart = document.createElement("li");
+      lostHeart.innerHTML = "<img src = 'images/lostheart.png' height='35px' width = '30px'>";
+      lostHeart.classList.add("tries");  
+      ol.insertBefore(lostHeart, li[0])
+     
+}}
+checkWin();
 });
 
