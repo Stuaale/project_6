@@ -55,6 +55,10 @@ button {
   transition: var(--transition);
 }
 
+img {
+  margin-right: 5px ;
+}
+
 .main-container {
   display: flex;
   flex-direction: column;
